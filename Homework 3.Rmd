@@ -81,11 +81,51 @@ totalcounty <- rbind.data.frame(nordland, troms, finnmark)
 ```{r}
 #Grafer for hvert enkelt fylke
 
-nordplot <- ggplot(nordland, aes(x = nordland$Date, y = nordland$`Firm name`)) +
-geom_point() +
-labs(x = "Date", y = "Number of firms", Title = "Number of new firms in Nordland per month")
+nordplot <- ggplot(nordland, aes(x = Date)) +
+geom_bar() +
+labs(x = "Date", y = "Number of firms") + 
+ggtitle("Number of new firms per month in Nordland") +
+theme(plot.title = element_text(hjust = 0.5))
 
 nordplot
+
+tromsplot <- ggplot(troms, aes(x = Date)) +
+  geom_bar() +
+  labs(x = "Date", y = "Number of firms") +
+  ggtitle("Number of new firms per month in Troms") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+tromsplot
+
+finnplot <- ggplot(finnmark, aes(x = Date)) +
+  geom_bar() +
+  labs(x = "Date", y = "Number of firms") +
+  ggtitle("Number of new firms per month in Finnmark") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+finnplot
+
+```
+
+```{r}
+#Total for hver måned, hvert fylke
+
+nordland$firm <- 1
+troms$firm <- 1
+finnmark$firm <- 1
+
+nordlandtotal <- nordland %>%
+  summarize(totalfirm = sum(firm))
+
+paste("Nordland has", nordlandtotal, "new firms in total")
+
+tromstotal <- troms %>%
+  summarize(totalfirm = sum(firm))
+paste("Troms has", tromstotal, "new firms in total")
+
+finntotal <- finnmark %>%
+  summarize(totalfirm = sum(firm))
+paste("Finnmark has", finntotal, "new firms in total")
 
 ```
 
