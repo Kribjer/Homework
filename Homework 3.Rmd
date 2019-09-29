@@ -15,6 +15,8 @@ library(tidyverse)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(lubridate)
+library(zoo)
 ```
 
 ```{r}
@@ -48,7 +50,7 @@ Firmname <- unique(Firmname)
 
 datedata <- html_nodes(webpage, "td:nth-child(6) p")
 datetext <- html_text(datedata)
-datetext <- as.Date(datetext, "%d.%m.%Y")
+datetext <- as.yearmon(datetext, "%d.%m.%Y", "%M")
 head(datetext)
 Datename <- data.frame(datetext)
 Datename <- Datename [-1, ]
@@ -126,6 +128,32 @@ paste("Troms has", tromstotal, "new firms in total")
 finntotal <- finnmark %>%
   summarize(totalfirm = sum(firm))
 paste("Finnmark has", finntotal, "new firms in total")
+
+```
+```{r}
+#Test, skifte navn fra totalfirm til nordDiff? 
+nordDiff <- nordland %>% 
+  mutate(Month = month(Date)) %>% 
+  group_by(firm, Date) %>% 
+  summarize(Totalfirm = sum(firm))
+ 
+nordDiff <- nordDiff [ ,-1]
+
+tromsDiff <- troms %>% 
+  mutate(Month = month(Date)) %>% 
+  group_by(firm, Date) %>% 
+  summarize(Totalfirm = sum(firm))
+
+tromsDiff <- tromsDiff[ ,-1]
+
+finnDiff <- finnmark %>% 
+  mutate(Month = month(Date)) %>% 
+  group_by(firm, Date) %>% 
+  summarize(Totalfirm = sum(firm))
+
+finnDiff <- finnDiff[ ,-1]
+
+firmtotal <- data.frame()
 
 ```
 
