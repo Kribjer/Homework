@@ -1,0 +1,90 @@
+---
+title: "Homework 3"
+author: "Kristian Bjerke"
+date: "26/09/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rvest)
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r}
+#Importing the url
+url <- "https://w2.brreg.no/kunngjoring/kombisok.jsp?datoFra=01.01.2019&datoTil=25.09.2019&id_region=100&id_fylke=-+-+-&id_niva1=2&id_bransje1=0"
+
+webpage <- read_html(url)
+```
+
+```{r}
+#Importing the nodes, creating and cleaning the 3 data frames
+countydata <- html_nodes(webpage, "td td:nth-child(2) strong")
+countytext <- html_text(countydata)
+countytext <- gsub("\n","",countytext)
+countytext <- gsub(" ","", countytext)
+head(countytext)
+Countyname <- data.frame(countytext)
+Countyname <- rename(Countyname, "County" = "countytext")
+Countyname <- as.factor(Countyname)
+
+newfirmdata <- html_nodes(webpage, "td td:nth-child(2) p")
+newfirmtext <- html_text(newfirmdata)
+newfirmtext <- gsub("\n", "", newfirmtext)
+newfirmtext <- gsub(" ","", newfirmtext)
+head(newfirmtext)
+Firmname <- data.frame(newfirmtext)
+Firmname <- rename(Firmname, "Firm name" = "newfirmtext")
+Firmname <- Firmname [-1, ]
+Firmname <- as.factor(Firmname)
+Firmname <- unique(Firmname)
+
+datedata <- html_nodes(webpage, "td:nth-child(6) p")
+datetext <- html_text(datedata)
+datetext <- as.Date(datetext, "%d.%m.%Y")
+head(datetext)
+Datename <- data.frame(datetext)
+Datename <- Datename [-1, ]
+
+```
+
+```{r}
+#Ferdiggjør datasettet ved å lage en "main database" og drar ut informasjon derifra til hvert enkelt fylke.
+
+totaldata <- data.frame(Firmname, Datename)
+totaldata <- rename(totaldata, "Firm Name" = "Firmname", "Date" = "Datename")
+
+nordland <- data.frame(totaldata$`Firm Name`[1:1052], totaldata$Date[1:1052])
+nordland <- rename(nordland, "Firm name" = "totaldata..Firm.Name..1.1052.", "Date" = "totaldata.Date.1.1052.")
+
+
+troms <- data.frame(totaldata$`Firm Name` [1053:1804], totaldata$Date[1053:1804])
+troms <- troms[-1, ]
+troms <- rename(troms, "Firm name" = "totaldata..Firm.Name..1053.1804.", "Date" = "totaldata.Date.1053.1804.")
+
+finnmark <- data.frame(totaldata$`Firm Name` [1805:2216], totaldata$Date[1805:2216])
+finnmark <- finnmark[-1, ]
+finnmark <- rename(finnmark, "Firm name" ="totaldata..Firm.Name..1805.2216.", "Date" = "totaldata.Date.1805.2216.")
+
+totalcounty <- rbind.data.frame(nordland, troms, finnmark)
+
+```
+
+
+```{r}
+#Grafer for hvert enkelt fylke
+
+nordplot <- ggplot(nordland, aes(x = nordland$Date, y = nordland$`Firm name`)) +
+geom_point() +
+labs(x = "Date", y = "Number of firms", Title = "Number of new firms in Nordland per month")
+
+nordplot
+```
+
