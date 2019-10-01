@@ -66,7 +66,6 @@ totaldata <- rename(totaldata, "Firm Name" = "Firmname", "Date" = "Datename")
 nordland <- data.frame(totaldata$`Firm Name`[1:1052], totaldata$Date[1:1052])
 nordland <- rename(nordland, "Firm name" = "totaldata..Firm.Name..1.1052.", "Date" = "totaldata.Date.1.1052.")
 
-
 troms <- data.frame(totaldata$`Firm Name` [1053:1804], totaldata$Date[1053:1804])
 troms <- troms[-1, ]
 troms <- rename(troms, "Firm name" = "totaldata..Firm.Name..1053.1804.", "Date" = "totaldata.Date.1053.1804.")
@@ -83,6 +82,8 @@ totalcounty <- rbind.data.frame(nordland, troms, finnmark)
 ```{r}
 #Grafer for hvert enkelt fylke
 
+nordland$Date <- as.Date(nordland$Date)
+
 nordplot <- ggplot(nordland, aes(x = Date)) +
 geom_bar() +
 labs(x = "Date", y = "Number of firms") + 
@@ -91,6 +92,8 @@ theme(plot.title = element_text(hjust = 0.5))
 
 nordplot
 
+troms$Date <- as.Date(troms$Date)
+
 tromsplot <- ggplot(troms, aes(x = Date)) +
   geom_bar() +
   labs(x = "Date", y = "Number of firms") +
@@ -98,6 +101,8 @@ tromsplot <- ggplot(troms, aes(x = Date)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 tromsplot
+
+finnmark$Date <- as.Date(finnmark$Date)
 
 finnplot <- ggplot(finnmark, aes(x = Date)) +
   geom_bar() +
@@ -138,6 +143,9 @@ nordDiff <- nordland %>%
   summarize(Totalfirm = sum(firm))
  
 nordDiff <- nordDiff [ ,-1]
+
+ggplot(nordDiff, aes(x=Date))+
+  geom_bar()
 
 tromsDiff <- troms %>% 
   mutate(Month = month(Date)) %>% 
