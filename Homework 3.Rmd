@@ -55,7 +55,7 @@ head(datetext)
 Datename <- data.frame(datetext)
 Datename <- Datename [-1, ]
 
-```
+``` 
 
 ```{r}
 #Ferdiggjør datasettet ved å lage en "main database" og drar ut informasjon derifra til hvert enkelt fylke.
