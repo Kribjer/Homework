@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, include=FALSE}
 library(rvest)
 library(tidyverse)
 library(dplyr)
@@ -19,14 +19,14 @@ library(lubridate)
 library(zoo)
 ```
 
-```{r}
+```{r, include=FALSE}
 #Importing the url
 url <- "https://w2.brreg.no/kunngjoring/kombisok.jsp?datoFra=01.01.2019&datoTil=25.09.2019&id_region=100&id_fylke=-+-+-&id_niva1=2&id_bransje1=0"
 
 webpage <- read_html(url)
 ```
 
-```{r}
+```{r, include=FALSE}
 #Importing the nodes, creating and cleaning the 3 data frames
 countydata <- html_nodes(webpage, "td td:nth-child(2) strong")
 countytext <- html_text(countydata)
@@ -57,7 +57,7 @@ Datename <- Datename [-1, ]
 
 ``` 
 
-```{r}
+```{r, include=FALSE}
 #Ferdiggjør datasettet ved å lage en "main database" og drar ut informasjon derifra til hvert enkelt fylke.
 
 totaldata <- data.frame(Firmname, Datename)
@@ -79,7 +79,7 @@ totalcounty <- rbind.data.frame(nordland, troms, finnmark)
 ```
 
 
-```{r}
+```{r, include=FALSE}
 #Grafer for hvert enkelt fylke
 
 nordland$Date <- as.Date(nordland$Date)
@@ -115,6 +115,19 @@ finnplot
 ```
 
 ```{r}
+nordplot
+```
+
+```{r}
+finnplot
+```
+
+```{r}
+tromsplot
+```
+
+
+```{r, include=FALSE}
 #Total for hver måned, hvert fylke
 
 nordland$firm <- 1
@@ -124,18 +137,32 @@ finnmark$firm <- 1
 nordlandtotal <- nordland %>%
   summarize(totalfirm = sum(firm))
 
-paste("Nordland has", nordlandtotal, "new firms in total")
+text1 <- paste("Nordland has", nordlandtotal, "new firms in total")
 
 tromstotal <- troms %>%
   summarize(totalfirm = sum(firm))
-paste("Troms has", tromstotal, "new firms in total")
+text2 <- paste("Troms has", tromstotal, "new firms in total")
 
 finntotal <- finnmark %>%
   summarize(totalfirm = sum(firm))
-paste("Finnmark has", finntotal, "new firms in total")
+text3 <- paste("Finnmark has", finntotal, "new firms in total")
 
 ```
+
 ```{r}
+text1
+```
+
+```{r}
+text2
+```
+
+```{r}
+text3
+```
+
+
+```{r, include=FALSE}
 #Test, skifte navn fra totalfirm til nordDiff? 
 nordDiff <- nordland %>% 
   mutate(Month = month(Date)) %>% 
