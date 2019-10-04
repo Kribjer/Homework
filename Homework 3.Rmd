@@ -163,7 +163,7 @@ text3
 
 
 ```{r, include=FALSE}
-#Test, skifte navn fra totalfirm til nordDiff? 
+#Test, skifte navn fra totalfirm til nordDiff? ikke helt relevant til oppgaven, men jeg legger den ved uansett. 
 nordDiff <- nordland %>% 
   mutate(Month = month(Date)) %>% 
   group_by(firm, Date) %>% 
