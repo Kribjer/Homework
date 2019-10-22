@@ -3,12 +3,12 @@ title: "Homework 4"
 author: "Kristian Bjerke"
 date: "22/10/2019"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include = FALSE}
@@ -65,14 +65,14 @@ births2017$Weight = as.numeric(births2017$Weight)
 Weight2017 <- births2017 %>%
   summarize(avgweight2017 = mean(Weight))
 
-paste("Gjennomsnittsvekten i 2017 er", Weight2017)
+Weight2017
 
 births2018$Weight = as.numeric(births2018$Weight)
 
 Weight2018 <- births2018 %>%
   summarize(avgweight2018 = mean(Weight))
 
-paste("Gjennomsnittsvekten i 2018 er", Weight2018)
+Weight2018
 ```
 
 
@@ -87,8 +87,6 @@ weightdiff <- ggplot(births2018, aes(x = Weight, color = Sex))+
   geom_density()
 
 weightdiff
-
-paste("Vi ser at gutter har større snittvekt")
 ```
 
 ```{r}
