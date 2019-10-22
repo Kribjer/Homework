@@ -1,0 +1,95 @@
+---
+title: "Homework 4"
+author: "Kristian Bjerke"
+date: "22/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list=ls())
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readr)
+```
+
+```{r}
+setwd("C:/Users/krizz/Desktop/BED-2056")
+
+births2017 <- read_fwf("Nat2017PublicUS.c20180516.r20180808.txt",    fwf_positions(start = c(9,13,504,475),
+                         end = c(12,14,507,475),
+                         col_names = c("Birth_year","Birth_month", "Weight", "Sex")
+                         ))
+
+births2018 <- read_fwf("Nat2018PublicUS.c20190509.r20190717.txt",    fwf_positions(start = c(9,13,504,475),
+                         end = c(12,14,507,475),
+                         col_names = c("Birth_year","Birth_month", "Weight", "Sex")
+                         ))
+
+```
+
+```{r}
+#Task 1
+
+Number2017 <- births2017 %>% count(Sex)
+
+Number2017
+
+Number2018 <- births2018 %>% count(Sex)
+
+Number2018
+
+Numberdiff <- Number2017$n - Number2018$n
+
+Numberdiff
+```
+
+```{r}
+#Average birthweight
+
+births2017$Weight = as.numeric(births2017$Weight)
+
+Weight2017 <- births2017 %>%
+  summarize(avgweight = mean(Weight))
+
+Weight2017
+
+births2018$Weight = as.numeric(births2018$Weight)
+
+Weight2018 <- births2018 %>%
+  summarize(avgweight = mean(Weight))
+
+Weight2018
+```
+
+
+```{r}
+#Task 2
+
+births2018$Sex = as.factor(births2018$Sex)
+plot2018 <- births2018[ ,-1:-2]
+
+
+weightdiff <- ggplot(births2018, aes(x = Weight, color = Sex))+
+  geom_density()
+
+weightdiff
+```
+
+```{r}
+#Task 3
+
+yeardiff2017 <- births2017 %>%
+  group_by(Birth_month) %>%
+  summarize(meanweight = mean(Weight))
+
+yeardiff2018 <- births2018 %>%
+  group_by(Birth_month) %>%
+  summarize(meanweight = mean(Weight))
+```
+
