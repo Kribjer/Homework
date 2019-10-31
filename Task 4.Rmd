@@ -33,13 +33,15 @@ regions <- storedata %>%
   filter(Customer_Segment == c("Corporate", "Consumer")) %>%
   filter(Order_Date >= "2017-10-01", Order_Date <= "2017-12-30")
 
-Totalsales <- regions %>%
-  group_by(Order_Date, Region, Customer_Segment, Sales) %>%
-  summarize(totalsales = sum(Sales))
+Region1 <- regions %>%
+  filter(Region == "Region 1")
 
+Region1$October <- Region1$Sales[[6]] + Region1$Sales[[2]]
+Region1$November <- Region1$Sales[[1]] + Region1$Sales[[5]] + Region1$Sales[[8]]
+Region1$December <- Region1$Sales[[3]] + Region1$Sales[[4]] + Region1$Sales[[7]]
 
-
-  
+Region9 <- regions %>%
+  filter(Region == "Region 9")
 
 ```
 
