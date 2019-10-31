@@ -1,0 +1,49 @@
+---
+title: "Task 4"
+author: "Kristian Bjerke"
+date: "31/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list=ls())
+```
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+
+```
+
+```{r}
+storedata <- read.csv("storedata.csv")
+storedata$Order_Date <- as.Date(storedata$Order_Date, format = "%Y-%m-%d")
+```
+
+```{r}
+
+regions <- storedata %>%
+  filter(Region == c("Region 1", "Region 9")) %>%
+  filter(Customer_Segment == c("Corporate", "Consumer")) %>%
+  filter(Order_Date >= "2017-10-01", Order_Date <= "2017-12-30")
+
+Totalsales <- regions %>%
+  group_by(Order_Date, Region, Customer_Segment, Sales) %>%
+  summarize(totalsales = sum(Sales))
+
+
+
+  
+
+```
+
+```{r}
+
+```
+
