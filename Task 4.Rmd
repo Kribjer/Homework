@@ -84,7 +84,14 @@ Monthsales2 <- storedata %>%
 
 Monthsales2 <- subset(Monthsales2, select = c(Order_Date, Sales, Region))
 
+Monthsales2$Order_Date <- as.Date(Monthsales2$Order_Date, format= "%Y-%m-%d")
+
+arrange(Monthsales2$Order_Date)
+
 ggplot(Monthsales1, aes(x = Order_Date, y = Sales)) +
+  geom_col()
+
+ggplot(Monthsales2, aes(x = Order_Date, y = Sales)) +
   geom_col()
 
 ```
