@@ -28,6 +28,8 @@ storedata$Order_Date <- as.Date(storedata$Order_Date, format = "%Y-%m-%d")
 
 ```{r}
 
+#Oppgave 1
+
 regions <- storedata %>%
   filter(Region == c("Region 1", "Region 9")) %>%
   filter(Customer_Segment == c("Corporate", "Consumer")) %>%
@@ -36,16 +38,54 @@ regions <- storedata %>%
 Region1 <- regions %>%
   filter(Region == "Region 1")
 
-Region1$October <- Region1$Sales[[6]] + Region1$Sales[[2]]
-Region1$November <- Region1$Sales[[1]] + Region1$Sales[[5]] + Region1$Sales[[8]]
-Region1$December <- Region1$Sales[[3]] + Region1$Sales[[4]] + Region1$Sales[[7]]
+Salesoctober1 <- Region1$Sales[[6]] + Region1$Sales[[2]]
+Salesnovember1 <- Region1$Sales[[1]] + Region1$Sales[[5]] + Region1$Sales[[8]]
+Salesdecember1 <- Region1$Sales[[3]] + Region1$Sales[[4]] + Region1$Sales[[7]]
+
+Totalsales1 <- data.frame(Salesoctober1, Salesnovember1, Salesdecember1) %>%
+  rename("October" = Salesoctober1, "November" = Salesnovember1, "December" = Salesdecember1)
+
 
 Region9 <- regions %>%
   filter(Region == "Region 9")
 
+Salesoctober2 <- Region9$Sales[[9]] + Region9$Sales[[10]] + Region9$Sales[[4]] + Region9$Sales[[7]] + Region9$Sales[[5]] + Region9$Sales[[12]] + Region9$Sales[[3]]
+
+Salesnovember2 <- Region9$Sales[[1]] + Region9$Sales[[13]] + Region9$Sales[[8]]
+
+Salesdecember2 <- Region9$Sales[[11]] + Region9$Sales[[2]] + Region9$Sales[[6]]
+
+Totalsales2 <- data.frame(Salesoctober2, Salesnovember2, Salesdecember2) %>%
+  rename("October" = Salesoctober2, "November" = Salesnovember2, "December" = Salesdecember2)
+
 ```
 
 ```{r}
+#Oppgave 1 svar
+
+paste("Region 1 had a total sale of", Totalsales1$October,"in October.", Totalsales1$November,"in November, and", Totalsales1$December,"for December.")
+
+paste("Similarly, region 9 had a total sale of", Totalsales2$October, Totalsales2$November, Totalsales2$December,"in October, November and December respectively.")
+
+```
+
+```{r}
+Monthsales1 <- storedata %>%
+  filter(Region == ("Region 1")) %>%
+  filter(Order_Date >= "2015-01-01", Order_Date <= "2017-12-31")
+
+Monthsales1 <- subset(Monthsales1, select = c(Order_Date, Sales, Region))
+
+Monthsales1$Order_Date <- months.Date(Monthsales1$Order_Date)
+
+Monthsales2 <- storedata %>%
+  filter(Region == ("Region 13")) %>%
+  filter(Order_Date >="2015-01-01", Order_Date <= "2017-12-31")
+
+Monthsales2 <- subset(Monthsales2, select = c(Order_Date, Sales, Region))
+
+ggplot(Monthsales1, aes(x = Order_Date, y = Sales)) +
+  geom_col()
 
 ```
 
