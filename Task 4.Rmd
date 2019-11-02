@@ -19,6 +19,7 @@ library(tidyverse)
 library(ggplot2)
 library(lubridate)
 library(zoo)
+library(sarima)
 
 ```
 
@@ -152,6 +153,7 @@ paste("The customer segment with the highest average profit is", Avgprofit$Custo
 ```{r}
 #Oppgave 5
 
+model <- sarima(x, 0:4, 0:4, 0:1, 0:4, 0:1, 0:4, 12)
 
 ```
 
