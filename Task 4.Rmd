@@ -18,6 +18,7 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(lubridate)
+library(zoo)
 
 ```
 
@@ -70,13 +71,13 @@ paste("Similarly, region 9 had a total sale of", Totalsales2$October, Totalsales
 ```
 
 ```{r}
+#Oppgave 2
+
 Monthsales1 <- storedata %>%
   filter(Region == ("Region 1")) %>%
   filter(Order_Date >= "2015-01-01", Order_Date <= "2017-12-31")
 
 Monthsales1 <- subset(Monthsales1, select = c(Order_Date, Sales, Region))
-
-Monthsales1$Order_Date <- months.Date(Monthsales1$Order_Date)
 
 Monthsales2 <- storedata %>%
   filter(Region == ("Region 13")) %>%
@@ -84,15 +85,50 @@ Monthsales2 <- storedata %>%
 
 Monthsales2 <- subset(Monthsales2, select = c(Order_Date, Sales, Region))
 
-Monthsales2$Order_Date <- as.Date(Monthsales2$Order_Date, format= "%Y-%m-%d")
+g1 <- ggplot()+
+  geom_col(data=Monthsales1, aes(x = Monthsales1$Order_Date, y = Monthsales1$Sales, color = Monthsales1$Region)) +
+  geom_col(data=Monthsales2, aes(x = Monthsales2$Order_Date, y = Monthsales2$Sales, color = Monthsales2$Region))
 
-arrange(Monthsales2$Order_Date)
+Monthsales1$Order_Date <- as.yearmon(Monthsales1$Order_Date, "%Y-%m")
 
-ggplot(Monthsales1, aes(x = Order_Date, y = Sales)) +
-  geom_col()
+Monthsales2$Order_Date <- as.yearmon(Monthsales2$Order_Date, "%Y-%m")
 
-ggplot(Monthsales2, aes(x = Order_Date, y = Sales)) +
-  geom_col()
+bymonth1 <- Monthsales1 %>%
+  group_by(Order_Date) %>%
+  summarise(Monthsales = sum(Sales))
+
+bymonth2 <- Monthsales2 %>%
+  group_by(Order_Date) %>%
+  summarise(Monthsales = sum(Sales))
+ 
+
+diffsales <- bymonth2$Monthsales - bymonth1$Monthsales
+
+diffsales
+
+
+```
+
+```{r}
+#Oppgave 2 svar
+
+g1
+
+
+```
+
+```{r}
+#Oppgave 3 svar
+
+diffsales
+
+paste("This box goes from January 2015 to December 2017. All numbers that are positive indicate that Region 13 had more sales than Region 1. You can also see clearly on the graph when this happens.")
+```
+
+```{r}
+#Oppgave 4
+
+
 
 ```
 
