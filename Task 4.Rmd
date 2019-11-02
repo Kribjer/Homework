@@ -128,6 +128,29 @@ paste("This box goes from January 2015 to December 2017. All numbers that are po
 ```{r}
 #Oppgave 4
 
+Avgprofit <- storedata %>%
+  filter(Region == c("Region 1", "Region 2", "Region 4", "Region 6", "Region 7", "Region 9", "Region 10", "Region 11", "Region 12", "Region 13"))
+
+Avgprofit <- subset(Avgprofit, select = c(Order_Date, Profit, Customer_Segment, Product_Category, Region)) 
+
+Avgprofit$Order_Date <- as.yearmon(Avgprofit$Order_Date, "%Y-%m")
+
+Avgprofit <- Avgprofit %>%
+  filter(Order_Date >= "Jan 2017", Order_Date <= "Dec 2017") %>%
+  group_by(Customer_Segment, Product_Category, Region) %>%
+  summarise(Average_profit = mean(Profit))
+
+```
+
+```{r}
+#Oppgave 4 svar
+
+paste("The customer segment with the highest average profit is", Avgprofit$Customer_Segment[49], "With an avgprofit of", Avgprofit$Average_profit[49], "from", Avgprofit$Region[49])
+
+```
+
+```{r}
+#Oppgave 5
 
 
 ```
