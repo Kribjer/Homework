@@ -19,7 +19,8 @@ library(tidyverse)
 library(ggplot2)
 library(lubridate)
 library(zoo)
-library(sarima)
+library(forecast)
+library(tseries)
 
 ```
 
@@ -146,14 +147,61 @@ Avgprofit <- Avgprofit %>%
 ```{r}
 #Oppgave 4 svar
 
-paste("The customer segment with the highest average profit is", Avgprofit$Customer_Segment[49], "With an avgprofit of", Avgprofit$Average_profit[49], "from", Avgprofit$Region[49])
+paste("The customer segment with the highest average profit is", Avgprofit$Customer_Segment[49], "With an avgprofit of", Avgprofit$Average_profit[49], "from;", Avgprofit$Region[49])
 
 ```
 
 ```{r}
 #Oppgave 5
 
-model <- sarima(x, 0:4, 0:4, 0:1, 0:4, 0:1, 0:4, 12)
+sarimacore <- storedata %>%
+  filter(Customer_Segment == "Small Business") %>%
+  filter(Product_Category == "Office Supplies")
 
+sarimacore$Order_Date <- as.yearmon(sarimacore$Order_Date, "%Y-%m")
+
+sarimaAO <- sarimacore %>%
+  group_by(Order_Date) %>%
+  summarise(MonthlyOQ = sum(Order_Quantity))
+
+holdout <- sarimaAO[37:48, ]
+
+sarimaAO <- sarimaAO[-37:-48, ]
+
+tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
+
+autoarima1 <- auto.arima(tsdata)
+
+forecast1 <- forecast(autoarima1, h=12)
+
+autoarima2 <- meanf(tsdata)
+autoarima3 <- rwf(tsdata, h=12)
+
+accuracy(autoarima3)
+
+
+```
+
+```{r}
+accuracy(forecast1)
+```
+
+
+```{r}
+#timeseries og arima testing
+
+tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
+
+plot(tsdata)
+
+autoarima1 <- auto.arima(tsdata)
+
+autoarima1
+
+forecast1 <- forecast(autoarima1, h=12)
+
+plot(forecast1)
+
+forecast1
 ```
 
