@@ -203,6 +203,8 @@ plot(forecast2)
 
 forecast2
 
+accuracy(arimatest)
+
 ```
 
 ```{r}
