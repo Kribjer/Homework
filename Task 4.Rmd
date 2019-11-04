@@ -66,7 +66,7 @@ Totalsales2 <- data.frame(Salesoctober2, Salesnovember2, Salesdecember2) %>%
 ```{r}
 #Oppgave 1 svar
 
-paste("Region 1 had a total sale of", Totalsales1$October,"in October.", Totalsales1$November,"in November, and", Totalsales1$December,"for December.")
+paste("Sub task 1. Region 1 had a total sale of", Totalsales1$October,"in October.", Totalsales1$November,"in November, and", Totalsales1$December,"for December.")
 
 paste("Similarly, region 9 had a total sale of", Totalsales2$October, Totalsales2$November, Totalsales2$December,"in October, November and December respectively.")
 
@@ -124,7 +124,7 @@ g1
 
 diffsales
 
-paste("This box goes from January 2015 to December 2017. All numbers that are positive indicate that Region 13 had more sales than Region 1. You can also see clearly on the graph when this happens.")
+paste("Sub task 3 & 2. This box goes from January 2015 to December 2017. All numbers that are positive indicate that Region 13 had more sales than Region 1. You can also see clearly on the graph when this happens.")
 ```
 
 ```{r, include=FALSE}
@@ -147,7 +147,7 @@ Avgprofit <- Avgprofit %>%
 ```{r}
 #Oppgave 4 svar
 
-paste("The customer segment with the highest average profit is", Avgprofit$Customer_Segment[49], "With an avgprofit of", Avgprofit$Average_profit[49], "from;", Avgprofit$Region[49])
+paste("Sub task 4. The customer segment with the highest average profit is", Avgprofit$Customer_Segment[49], "With an avgprofit of", Avgprofit$Average_profit[49], "from;", Avgprofit$Region[49])
 
 ```
 
@@ -197,6 +197,8 @@ plot(arimatest)
 
 forecast2 <- forecast(arimatest, h=12)
 
+paste("Sub task 5. Jeg skiftet litt rundt på tallene istedefor å lage 2500 modeller, da dette kommer til å ødelegge pcen min. Jeg har testet tallene litt, og fant den orderen som har minst RMSE, som er 63.78955 ")
+
 plot(forecast2)
 
 forecast2
@@ -206,6 +208,7 @@ forecast2
 ```{r}
 #Plot med egentlig quantity
 
+paste("Graph with the real aggregated order quantity with forecast.")
 plot(forecast2)
 lines(holdout)
 ```
