@@ -9,11 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, include=FALSE}
 rm(list=ls())
 ```
 
-```{r}
+```{r, include=FALSE}
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
@@ -24,12 +24,12 @@ library(tseries)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 storedata <- read.csv("storedata.csv")
 storedata$Order_Date <- as.Date(storedata$Order_Date, format = "%Y-%m-%d")
 ```
 
-```{r}
+```{r, include=FALSE}
 
 #Oppgave 1
 
@@ -72,7 +72,7 @@ paste("Similarly, region 9 had a total sale of", Totalsales2$October, Totalsales
 
 ```
 
-```{r}
+```{r, include=FALSE}
 #Oppgave 2
 
 Monthsales1 <- storedata %>%
@@ -127,7 +127,7 @@ diffsales
 paste("This box goes from January 2015 to December 2017. All numbers that are positive indicate that Region 13 had more sales than Region 1. You can also see clearly on the graph when this happens.")
 ```
 
-```{r}
+```{r, include=FALSE}
 #Oppgave 4
 
 Avgprofit <- storedata %>%
@@ -151,8 +151,8 @@ paste("The customer segment with the highest average profit is", Avgprofit$Custo
 
 ```
 
-```{r}
-#Oppgave 5
+```{r, include=FALSE}
+#Oppgave 5, leker litt rundt med de forskjellige funksjonene nederst.
 
 sarimacore <- storedata %>%
   filter(Customer_Segment == "Small Business") %>%
@@ -182,7 +182,7 @@ accuracy(autoarima3)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
 
 arimatest <- arima(tsdata, order=c(4,0,2), seasonal = list(order = c(1,0,3)))
@@ -193,22 +193,21 @@ plot(arimatest)
 ```
 
 ```{r}
-#Jeg skiftet litt rundt på tallene istedefor å lage 2500 modeller, da dette kommer til å ødelegge pcen min. Jeg har testet tallene litt, og fant den orderen som har minst RMSE, som er 63.78955 
+#Oppgave 5. Jeg skiftet litt rundt på tallene istedefor å lage 2500 modeller, da dette kommer til å ødelegge pcen min. Jeg har testet tallene litt, og fant den orderen som har minst RMSE, som er 63.78955 
 
 forecast2 <- forecast(arimatest, h=12)
 
 plot(forecast2)
-plot(holdout)
 
 forecast2
 
 ```
 
-
 ```{r}
-#timeseries og arima testing
+#Plot med egentlig quantity
 
-tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
-
+plot(forecast2)
+lines(holdout)
 ```
+
 
