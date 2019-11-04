@@ -183,7 +183,25 @@ accuracy(autoarima3)
 ```
 
 ```{r}
-accuracy(forecast1)
+tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
+
+arimatest <- arima(tsdata, order=c(4,0,2), seasonal = list(order = c(1,0,3)))
+
+accuracy(arimatest)
+
+plot(arimatest)
+```
+
+```{r}
+#Jeg skiftet litt rundt på tallene istedefor å lage 2500 modeller, da dette kommer til å ødelegge pcen min. Jeg har testet tallene litt, og fant den orderen som har minst RMSE, som er 63.78955 
+
+forecast2 <- forecast(arimatest, h=12)
+
+plot(forecast2)
+plot(holdout)
+
+forecast2
+
 ```
 
 
@@ -192,16 +210,5 @@ accuracy(forecast1)
 
 tsdata <- ts(sarimaAO$MonthlyOQ, frequency = 12, start = c(2014, 1))
 
-plot(tsdata)
-
-autoarima1 <- auto.arima(tsdata)
-
-autoarima1
-
-forecast1 <- forecast(autoarima1, h=12)
-
-plot(forecast1)
-
-forecast1
 ```
 
